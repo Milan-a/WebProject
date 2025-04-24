@@ -1,0 +1,47 @@
+section {
+    margin-top: 60px
+}
+
+.person-card>a>img {
+    width: 100px;
+    height: 100px;
+    float: left;
+    border: 1px solid grey;
+    margin-right: 10px
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 770px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.person-card {
+    display: inline-block;
+    width: 96%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0.5em;
+}
+
+.person-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
