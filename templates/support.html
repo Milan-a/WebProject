@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Служба поддержки</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_for_reg.css')}}">
+</head>
+<body>
+<div class="container">
+    <a class="support-icon" href="/vacancies">
+        <img src="static/img/icon.png" style="width: 35px; height: 35px;" alt="Support Icon">
+    </a>
+    <h1>Служба поддержки</h1>
+    <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="4d6774ae-8714-4cf9-b962-82fccbcaeaba">
+        <label for="username">Ваша почта</label>
+        <input type="text" id="username" name="username" required>
+        <label for="problem">В чём ваша проблема?</label>
+        <input type="text" id="problem" name="problem" required>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+</body>
+</html>

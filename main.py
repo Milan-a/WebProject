@@ -7,7 +7,7 @@ from data.users import User
 from data import db_session
 
 app = Flask(__name__)
-# SECRET_KEY
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -81,7 +81,12 @@ def resume():
     template_name = 'resume.html'
     return render_template(template_name)
 
+@app.route('/support')
+def support():
+    template_name = 'support.html'
+    return render_template(template_name)
+
 
 if __name__ == '__main__':
-    db_session.global_init("db/data_base.sqlite")
+    #  db_session.global_init("db/data_base.sqlite")
     app.run(port=8080, host='127.0.0.1')
