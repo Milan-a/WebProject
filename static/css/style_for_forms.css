@@ -34,3 +34,10 @@ h1 {
 p>a {
     color: #276361;
 }
+
+.support-icon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: pointer;
+}
