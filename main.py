@@ -14,6 +14,7 @@ def index():
 def submit_registration():
     username = request.form['username']
     password = request.form['password']
+    print(username, password)
     # Здесь можно добавить логику для сохранения пользователя в бд
 
     return redirect(url_for('main_page'))
@@ -37,5 +38,5 @@ def resume():
 
 
 if __name__ == '__main__':
-    #  db_session.global_init("db/data_base.sqlite")
+    db_session.global_init("db/data_base.sqlite")
     app.run(port=8080, host='127.0.0.1')

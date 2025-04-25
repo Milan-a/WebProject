@@ -1,5 +1,13 @@
+body {
+    background-color: #f4f4f4;
+}
+
 section {
     margin-top: 60px
+}
+
+nav.clr {
+    background-color: white;
 }
 
 .person-card>a>img {
@@ -24,6 +32,7 @@ section {
 .person-card {
     display: inline-block;
     width: 96%;
+    background: white;
     border: 1px solid gray;
     border-radius: 10px;
     padding: 10px;
@@ -44,4 +53,3 @@ p {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
-
