@@ -11,8 +11,9 @@ body {
     padding: 20px;
 }
 
-button.btn-primary {
-    width: 100%;
+.btn-primary {
+    padding-left: 20px;
+    padding-right: 20px;
     background: #358885;
     --bs-btn-hover-bg: #276361;
     border-color: #093536;
@@ -21,17 +22,13 @@ button.btn-primary {
     --bs-btn-active-border-color: #093536;
 }
 
-input {
-    margin-bottom: 20px;
-}
-
 h1 {
     text-align: center;
+    margin-bottom: 15px;
 }
 
-p {
+.button-submit {
     text-align: center;
-    vertical-align: bottom;
 }
 
 p>a {
