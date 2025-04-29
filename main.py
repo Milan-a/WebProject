@@ -1,13 +1,17 @@
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.forms.login_form import LoginForm
 from data.forms.register_form import RegisterForm
+from data.forms.resume_add_form import ResumeAddForm
+from data.forms.vacancies_add_form import VacanciesAddForm
+from data.resume import Resume
 from data.users import User
 
 from data import db_session
+from data.vacancies import Vacancies
 
 app = Flask(__name__)
-#SECRET_KEY
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -81,10 +85,88 @@ def resume():
     template_name = 'resume.html'
     return render_template(template_name)
 
+
+@app.route('/vacancies_add_form', methods=['GET', 'POST'])
+def vacancies_add_form():
+    form = VacanciesAddForm()
+    if form.validate_on_submit():
+        if not form.title.data:
+            return render_template('vacancies_add_form.html',
+                                   form=form,
+                                   message="Введите название вакансии")
+        db_sess = db_session.create_session()
+        usr_id = current_user.id
+        vacancies = Vacancies(
+            title=form.title.data,
+            company=form.company.data,
+            price=form.price.data,
+            experience=form.experience.data,
+            address=form.address.data,
+            schedule=form.schedule.data,
+            hours=form.hours.data,
+            description=form.description.data,
+            phone=form.phone.data,
+            email=form.email.data,
+            user_id=usr_id
+        )
+        db_sess.add(vacancies)
+        db_sess.commit()
+        return redirect('/profile')
+    return render_template('vacancies_add_form.html', form=form)
+
+
+@app.route('/resume_add_form', methods=['GET', 'POST'])
+def resume_add_form():
+    form = ResumeAddForm()
+    if form.validate_on_submit():
+        if not form.title.data:
+            return render_template('resume_add_form.html',
+                                   form=form,
+                                   message="Введите название вакансии")
+        db_sess = db_session.create_session()
+        usr_id = current_user.id
+        resume = Resume(
+            title=form.title.data,
+            age=form.age.data,
+            gender=form.gender.data,
+            price=form.price.data,
+            experience=form.experience.data,
+            place_of_residence=form.place_of_residence.data,
+            last_place_of_work=form.last_place_of_work.data,
+            education=form.education.data,
+            specializations=form.specializations.data,
+            about_me=form.about_me.data,
+            portfolio=form.portfolio.data,
+            user_id=usr_id
+        )
+        db_sess.add(resume)
+        db_sess.commit()
+        return redirect('/profile')
+    return render_template('resume_add_form.html', form=form)
+
+
+
 @app.route('/support')
 def support():
     template_name = 'support.html'
     return render_template(template_name)
+
+
+@app.route('/profile')
+def profile():
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        user_id = current_user.get_id()
+
+        res = db_sess.query(Resume).filter(Resume.user_id == user_id).first()
+        resume = 0 if res is None else 1
+
+        vac = db_sess.query(Vacancies).filter(Vacancies.user_id == user_id).first()
+        vacancies = 0 if vac is None else 1
+        print(f'User id-{user_id}: resume-{resume}, vacancies-{vacancies}')
+
+        template_name = 'profile.html'
+        return render_template(template_name, resume=resume, vacancies=vacancies)
 
 
 if __name__ == '__main__':

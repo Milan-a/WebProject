@@ -1,10 +1,17 @@
 body {
     background-color: #f4f4f4;
-    padding: 40px;
+    padding: 50px;
+}
+
+.support-icon {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    cursor: pointer;
 }
 
 .container {
-    max-width: 500px;
+    max-width: 700px;
     background: white;
     border: 1px solid gray;
     border-radius: 10px;
@@ -22,29 +29,21 @@ body {
     --bs-btn-active-border-color: #093536;
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 15px;
+.name {
+    font-size: 20px;
+}
+
+.res-and-vac {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 570px) {
+    .res-and-vac {
+        grid-template-columns: 1fr;
+    }
 }
 
 .button-submit {
     text-align: center;
-}
-
-p>a {
-    color: #276361;
-}
-
-.support-icon {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    cursor: pointer;
-}
-
-
-ul {
-    padding-left: 0px;
-    padding-bottom: 10px;
-    list-style: none;
 }
