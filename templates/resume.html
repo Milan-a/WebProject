@@ -2,127 +2,29 @@
 
 {% block content %}
     <div class="container">
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Управляющий розничной сетью</p>
-            <p>53 года</p>
-            <p>100 000-150 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>28 лет</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>ооо "Союз-М Ростов"</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Java-разработчик</p>
-            <p>28 лет</p>
-            <p>380 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>5 лет 4 месяца</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Компания-разработчик собственного ПО</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Главный бухгалтер</p>
-            <p>48 лет</p>
-            <p>250 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>30 минут</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Производственная компания</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Руководитель проекта</p>
-            <p>37 лет</p>
-            <p>180 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>11 лет 8 месяцев</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>ООО "СТРОЙРЕСУРС"</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Охранник</p>
-            <p>53 года</p>
-            <p>30 000-50 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>21 год</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Бизнес центры ФГУП Офисы и т п.</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Инженер технической поддержки</p>
-            <p>37 лет</p>
-            <p>70 000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>12 лет 1 месяц</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Сервисный центр</p>
-            </div>
-        </div>
+        {% for resume in data %}
+            <div class="person-card">
+                {% if resume.user.avatar == None %}
+                    {% if resume.gender == "Женский" %}
+                        <a href="#"><img src="static/img/woman_avatar.png"></a>
+                    {% elif resume.gender == "Мужской" %}
+                        <a href="#"><img src="static/img/man_avatar.png"></a>
+                    {% endif %}
+                {% else %}
+<!--                Временная заглушка. Сюда надо подставлять фото пользователя из current_user.avatar-->
+                    <a href="#"><img src="static/img/anon_avatar.png"></a>
+                {% endif %}
 
-
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Инженер технической поддержки</p>
-            <p>37 лет</p>
-            <p>70000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>12 лет 1 месяц</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Сервисный центр</p>
+                <p class="person-name">{{ resume.title }}</p>
+                <p style="color: grey">Возраст: <span style="color: black">{{resume.age}}</span></p>
+                <p>{{ resume.price }}</p>
+                <div class="info">
+                    <p style="color: grey;">Опыт работы</p>
+                    <p>{{ resume.experience }}</p>
+                    <p style="color: grey;">Последнее место работы</p>
+                    <p>{{ resume.last_place_of_work }}</p>
+                </div>
             </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Инженер технической поддержки</p>
-            <p>37 лет</p>
-            <p>70000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>12 лет 1 месяц</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Сервисный центр</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Инженер технической поддержки</p>
-            <p>37 лет</p>
-            <p>70000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>12 лет 1 месяц</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Сервисный центр</p>
-            </div>
-        </div>
-        <div class="person-card">
-            <a href="#"><img src="static/img/anon_avatar.png"></a>
-            <p class="person-name">Инженер технической поддержки</p>
-            <p>37 лет</p>
-            <p>70000 руб.</p>
-            <div class="info">
-                <p style="color: grey;">Опыт работы</p>
-                <p>12 лет 1 месяц</p>
-                <p style="color: grey;">Последнее место работы</p>
-                <p>Сервисный центр</p>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}

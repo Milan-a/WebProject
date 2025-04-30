@@ -8,33 +8,64 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/css/style_card_container.css">
+    <link rel="stylesheet" href="static/css/style_work_container.css">
     <link rel="stylesheet" href="static/css/style_for_profile.css">
+
     <title>Профиль</title>
 </head>
 <body>
     <a class="support-icon" href="/vacancies">
         <img src="static/img/icon.png" style="width: 35px; height: 35px;" alt="Support Icon">
     </a>
-    <div class="container">
-        <img src="static/img/anon_avatar.png" style="width: 130px; height: 130px;" alt="Support Icon">
-        <p class="name">{{ current_user.name }}</p>
+    <div class="container-profile">
+        <img src="static/img/anon_avatar.png" class="profile-icon" alt="Support Icon">
+        <p class="name-profile">{{ current_user.name }}</p>
         <br>
         <div class="res-and-vac">
             {% if resume == 0 %}
             <a href="/resume_add_form"><p class="button-submit"><button class="btn btn-primary">Добавить резюме</button></p></a>
+            <br><br>
             {% else %}
-
-
-
+                <h5>Ваше резюме <a href="#"><button class="btn btn-primary">Изменить</button></a> <a href="#"><button class="btn btn-primary delete">Удалить</button></a></h5>
+                <div class="person-card">
+                    {% if current_user.avatar == None %}
+                        {% if resume.gender == "Женский" %}
+                            <a href="#"><img src="static/img/woman_avatar.png"></a>
+                        {% elif resume.gender == "Мужской" %}
+                            <a href="#"><img src="static/img/man_avatar.png"></a>
+                        {% endif %}
+                    {% else %}
+<!--                    Временная заглушка. Сюда надо подставлять фото пользователя из current_user.avatar-->
+                        <a href="#"><img src="static/img/anon_avatar.png"></a>
+                    {% endif %}
+                    <p class="person-name">{{ resume.title }}</p>
+                    <p style="color: grey">Возраст: <span style="color: black">{{resume.age}}</span></p>
+                    <p>{{ resume.price }}</p>
+                    <div class="info">
+                        <p style="color: grey;">Опыт работы</p>
+                        <p>{{ resume.experience }}</p>
+                        <p style="color: grey;">Последнее место работы</p>
+                        <p>{{ resume.last_place_of_work }}</p>
+                    </div>
+                </div>
+                <br><br>
             {% endif %}
             {% if vacancies == 0 %}
             <a href="/vacancies_add_form"><p class="button-submit"><button class="btn btn-primary">Добавить вакансию</button></p></a>
             {% else %}
-
-
-
+                <h5>Ваша вакансия <a href="#"><button class="btn btn-primary">Изменить</button></a> <a href="#"><button class="btn btn-primary delete">Удалить</button></a></h5>
+                <div class="work-card">
+                    <a href="#"><p class="work-name">{{ vacancies.title }}</p></a>
+                    <p style="font-size: 20px">{{ vacancies.price }}</p>
+                    <p style="color: #358885">{{ vacancies.company }}</p>
+                    <p style="color: gray"><img src="static/img/place_icon.png">{{ vacancies.address }}</p>
+                    <p class="work-info">{{ vacancies.description }}</p>
+                </div>
             {% endif %}
         </div>
+        <br><br>
+        <p style="color: grey">Профиль был создан {{current_user.created_date}}</p>
     </div>
 </body>
 </html>

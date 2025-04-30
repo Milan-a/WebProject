@@ -25,7 +25,7 @@ class Resume(SqlAlchemyBase):
     user = orm.relationship('User')
 
     def __repr__(self):
-        return f'({self.id}, {self.title}, {self.user})'
+        return f'({self.title}, {self.age}, {self.gender}, {self.price}, {self.experience}, {self.last_place_of_work}, {self.user})'
 
     def __str__(self):
         return self.__repr__()

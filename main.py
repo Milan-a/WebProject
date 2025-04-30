@@ -6,9 +6,9 @@ from data.forms.resume_add_form import ResumeAddForm
 from data.forms.vacancies_add_form import VacanciesAddForm
 from data.resume import Resume
 from data.users import User
-
 from data import db_session
 from data.vacancies import Vacancies
+from random import shuffle
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -19,7 +19,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
+    return db_sess.get(User, user_id)
 
 
 @app.route('/logout')
@@ -31,8 +31,7 @@ def logout():
 
 @app.route('/')
 def index():
-    template_name = 'vacancies.html'
-    return render_template(template_name)
+    return vacancies()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,14 +75,24 @@ def reqister():
 
 @app.route('/vacancies')
 def vacancies():
+    data = []
+    db_sess = db_session.create_session()
+    for vacancies in db_sess.query(Vacancies).all():
+        data.append(vacancies)
+    shuffle(data)
     template_name = 'vacancies.html'
-    return render_template(template_name)
+    return render_template(template_name, data=data)
 
 
 @app.route('/resume')
 def resume():
+    data = []
+    db_sess = db_session.create_session()
+    for resume in db_sess.query(Resume).all():
+        data.append(resume)
+    shuffle(data)
     template_name = 'resume.html'
-    return render_template(template_name)
+    return render_template(template_name, data=data)
 
 
 @app.route('/vacancies_add_form', methods=['GET', 'POST'])
@@ -159,11 +168,11 @@ def profile():
         user_id = current_user.get_id()
 
         res = db_sess.query(Resume).filter(Resume.user_id == user_id).first()
-        resume = 0 if res is None else 1
+        resume = 0 if res is None else res
 
         vac = db_sess.query(Vacancies).filter(Vacancies.user_id == user_id).first()
-        vacancies = 0 if vac is None else 1
-        print(f'User id-{user_id}: resume-{resume}, vacancies-{vacancies}')
+        vacancies = 0 if vac is None else vac
+        # print(f'User id-{user_id}: resume-{resume}, vacancies-{vacancies}')
 
         template_name = 'profile.html'
         return render_template(template_name, resume=resume, vacancies=vacancies)

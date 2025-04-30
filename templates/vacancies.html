@@ -2,20 +2,14 @@
 
 {% block content %}
     <div class="container">
-        <div class="work-card">
-            <a href="#"><p class="work-name">Ведущий программист 1С</p></a>
-            <p style="font-size: 20px">до 220 000 руб.</p>
-            <p style="color: #358885">НПО "Алмаз"</p>
-            <p style="color: gray"><img src="static/img/place_icon.png">Дмитров</p>
-            <p class="work-info">Сопровождение существующей системы на платформе 1 С 8.3 (ERP 2.5);
-                                 Доработка существующей конфигурации под нужды предприятия</p>
-        </div>
-        <div class="work-card">
-            <a href="#"><p class="work-name">Старший администратор / Помощник управляющего</p></a>
-            <p style="font-size: 20px">60 000 – 90 000 руб.</p>
-            <p style="color: #358885">Evium</p>
-            <p style="color: gray"><img src="static/img/place_icon.png">Москва, р-н Обручевский</p>
-            <p class="work-info">Контролировать процессы в смене, следить за качеством сервиса и атмосферой; Наставлять младших администраторов, помогать им расти</p>
-        </div>
+        {% for vacancies in data %}
+            <div class="work-card">
+                <a href="#"><p class="work-name">{{ vacancies.title }}</p></a>
+                <p style="font-size: 20px">{{ vacancies.price }}</p>
+                <p style="color: #358885">{{ vacancies.company }}</p>
+                <p style="color: gray"><img src="static/img/place_icon.png">{{ vacancies.address }}</p>
+                <p class="work-info">{{ vacancies.description }}</p>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
