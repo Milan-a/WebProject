@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.forms.login_form import LoginForm
 from data.forms.register_form import RegisterForm
@@ -9,6 +9,9 @@ from data.users import User
 from data import db_session
 from data.vacancies import Vacancies
 from random import shuffle
+import os
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -123,6 +126,10 @@ def vacancies_add_form():
         return redirect('/profile')
     return render_template('vacancies_add_form.html', form=form)
 
+# Конфигурация для загрузки изображений
+UPLOAD_FOLDER = 'static/img/uploads'  # Папка для сохранения изображений
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route('/resume_add_form', methods=['GET', 'POST'])
 def resume_add_form():
@@ -132,8 +139,16 @@ def resume_add_form():
             return render_template('resume_add_form.html',
                                    form=form,
                                    message="Введите название вакансии")
+
         db_sess = db_session.create_session()
         usr_id = current_user.id
+
+        # Обработка загруженного изображения
+        if form.image.data:
+            filename = secure_filename(form.image.data.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            form.image.data.save(image_path)  # Сохранение изображения
+
         resume = Resume(
             title=form.title.data,
             age=form.age.data,
@@ -145,9 +160,10 @@ def resume_add_form():
             education=form.education.data,
             specializations=form.specializations.data,
             about_me=form.about_me.data,
-            portfolio=form.portfolio.data,
+            image_path=image_path if form.image.data else None,  # Сохранение пути к изображению
             user_id=usr_id
         )
+
         db_sess.add(resume)
         db_sess.commit()
         return redirect('/profile')
@@ -176,6 +192,23 @@ def profile():
 
         template_name = 'profile.html'
         return render_template(template_name, resume=resume, vacancies=vacancies)
+
+
+@app.route('/vacancy/<int:vacancy_id>')
+def vacancy_detail(vacancy_id):
+    db_sess = db_session.create_session()
+    vacancy = db_sess.query(Vacancies).filter(Vacancies.id == vacancy_id).first()
+    if vacancy is None:
+        return "Вакансия не найдена", 404
+    return render_template('vacancy_detail.html', vacancy=vacancy)
+
+@app.route('/resume/<int:resume_id>')
+def resume_detail(resume_id):
+    db_sess = db_session.create_session()
+    resume = db_sess.query(Resume).filter(Resume.id == resume_id).first()
+    if resume is None:
+        return "Резюме не найдено", 404
+    return render_template('resume_detail.html', resume=resume)
 
 
 if __name__ == '__main__':
