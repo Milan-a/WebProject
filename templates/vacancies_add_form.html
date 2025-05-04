@@ -43,7 +43,7 @@
             </p>
             <p>
                 {{ form.price.label }}<br>
-                {{ form.price(class="form-control") }}<br>
+                {{ form.price(class="form-control", placeholder="... - ... руб.") }}<br>
                 {% for error in form.price.errors %}
                     <p class="alert alert-danger" role="alert">
                         {{ error }}
@@ -52,7 +52,7 @@
             </p>
             <p>
                 {{ form.experience.label }}<br>
-                {{ form.experience(class="form-control") }}<br>
+                {{ form.experience(class="form-control", placeholder=".. лет / не требуется") }}<br>
                 {% for error in form.experience.errors %}
                     <p class="alert alert-danger" role="alert">
                         {{ error }}
@@ -106,7 +106,7 @@
             </p>
             <p>
                 {{ form.description.label }}<br>
-                {{ form.description(class="form-control", type="textarea") }}<br>
+                {{ form.description(class="form-control", style="height: 150px;", type="textarea") }}<br>
                 {% for error in form.description.errors %}
                     <p class="alert alert-danger" role="alert">
                         {{ error }}

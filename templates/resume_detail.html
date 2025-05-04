@@ -1,0 +1,53 @@
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_for_details.css') }}">
+</head>
+<a href="/vacancies">
+    <img src="{{ url_for('static', filename='img/icon.png') }}" style="width: 35px; height: 35px;" alt="Icon">
+</a>
+<div class="container">
+    <div class="mini-block">
+        <h2 class="block-title"><span style="color: #276361;">{{ resume.title }}</span><span>{{ resume.price }}</span></h2>
+        <p>Пол: {{ resume.gender }}</p>
+        <p>Возраст: {{ resume.age }}</p>
+        <p>{{ resume.place_of_residence }}</p>
+    </div>
+
+    <div class="mini-block">
+        <p><strong>Специализации</strong></p>
+        <p>{{ resume.specializations }}</p>
+    </div>
+
+    <div class="mini-block">
+        <p><strong>Опыт работы {{ resume.experience }}</strong></p>
+        <p>Последнее место работы: {{ resume.last_place_of_work }}</p>
+    </div>
+
+    <div class="mini-block">
+        <p><strong>Образование</strong></p>
+        <p>{{ resume.education }}</p>
+    </div>
+
+    <div class="mini-block">
+        <p><strong>Обо мне</strong></p>
+        {% for string in resume.about_me.split('\n') %}
+            <p>{{ string }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="mini-block">
+        <p><strong>Контакты</strong></p>
+        {% for string in resume.contacts.split('\n') %}
+            <p>{{ string }}</p>
+        {% endfor %}
+    </div>
+    <p style="color: grey">Резюме было создано {{resume.created_date}}</p>
+</div>
+{% endblock %}

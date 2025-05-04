@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.forms.login_form import LoginForm
 from data.forms.register_form import RegisterForm
@@ -8,10 +8,6 @@ from data.resume import Resume
 from data.users import User
 from data import db_session
 from data.vacancies import Vacancies
-from random import shuffle
-import os
-from werkzeug.utils import secure_filename
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -82,7 +78,7 @@ def vacancies():
     db_sess = db_session.create_session()
     for vacancies in db_sess.query(Vacancies).all():
         data.append(vacancies)
-    shuffle(data)
+    data.reverse()
     template_name = 'vacancies.html'
     return render_template(template_name, data=data)
 
@@ -93,7 +89,7 @@ def resume():
     db_sess = db_session.create_session()
     for resume in db_sess.query(Resume).all():
         data.append(resume)
-    shuffle(data)
+    data.reverse()
     template_name = 'resume.html'
     return render_template(template_name, data=data)
 
@@ -126,9 +122,10 @@ def vacancies_add_form():
         return redirect('/profile')
     return render_template('vacancies_add_form.html', form=form)
 
-# Конфигурация для загрузки изображений
-UPLOAD_FOLDER = 'static/img/uploads'  # Папка для сохранения изображений
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# # Конфигурация для загрузки изображений
+# UPLOAD_FOLDER = 'static/img/uploads'  # Папка для сохранения изображений
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/resume_add_form', methods=['GET', 'POST'])
@@ -143,11 +140,10 @@ def resume_add_form():
         db_sess = db_session.create_session()
         usr_id = current_user.id
 
-        # Обработка загруженного изображения
-        if form.image.data:
-            filename = secure_filename(form.image.data.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            form.image.data.save(image_path)  # Сохранение изображения
+        # if form.portfolio.data:
+        #     filename = secure_filename(form.portfolio.data.filename)
+        #     image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        #     form.portfolio.data.save(image_path)
 
         resume = Resume(
             title=form.title.data,
@@ -160,7 +156,7 @@ def resume_add_form():
             education=form.education.data,
             specializations=form.specializations.data,
             about_me=form.about_me.data,
-            image_path=image_path if form.image.data else None,  # Сохранение пути к изображению
+            contacts=form.contacts.data,
             user_id=usr_id
         )
 
@@ -168,7 +164,6 @@ def resume_add_form():
         db_sess.commit()
         return redirect('/profile')
     return render_template('resume_add_form.html', form=form)
-
 
 
 @app.route('/support')
@@ -202,6 +197,7 @@ def vacancy_detail(vacancy_id):
         return "Вакансия не найдена", 404
     return render_template('vacancy_detail.html', vacancy=vacancy)
 
+
 @app.route('/resume/<int:resume_id>')
 def resume_detail(resume_id):
     db_sess = db_session.create_session()
@@ -209,6 +205,28 @@ def resume_detail(resume_id):
     if resume is None:
         return "Резюме не найдено", 404
     return render_template('resume_detail.html', resume=resume)
+
+
+@app.route('/delete_resume/<int:resume_id>')
+def delete_resume(resume_id):
+    db_sess = db_session.create_session()
+    resume = db_sess.query(Resume).get(resume_id)
+    if not resume:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+    db_sess.delete(resume)
+    db_sess.commit()
+    return redirect("/profile")
+
+
+@app.route('/delete_vacancies/<int:vacancies_id>')
+def delete_vacancies(vacancies_id):
+    db_sess = db_session.create_session()
+    vacancies = db_sess.query(Vacancies).get(vacancies_id)
+    if not vacancies:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+    db_sess.delete(vacancies)
+    db_sess.commit()
+    return redirect("/profile")
 
 
 if __name__ == '__main__':

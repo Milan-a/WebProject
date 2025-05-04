@@ -19,12 +19,14 @@ class Vacancies(SqlAlchemyBase):
     phone = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)  # номер телефона для связи
     email = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)  # почта для связи
     description = sqlalchemy.Column(sqlalchemy.String, nullable=True)  # полное описание
-    created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)  # дата создания
+    today = datetime.date.today()
+    date = today.strftime('%d.%m.%Y')
+    created_date = sqlalchemy.Column(sqlalchemy.String, default=date)  # дата создания
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relationship('User')
 
     def __repr__(self):
-        return f'({self.id}, {self.title}, {self.user})'
+        return f'(<Vacancies> {self.id}, {self.title}, {self.user})'
 
     def __str__(self):
         return self.__repr__()
