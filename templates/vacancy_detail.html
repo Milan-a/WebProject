@@ -1,4 +1,5 @@
-{% block content %}
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,29 +10,31 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_for_details.css') }}">
 </head>
-<a href="/vacancies">
-    <img src="{{ url_for('static', filename='img/icon.png') }}" style="width: 35px; height: 35px;" alt="Icon">
-</a>
-<div class="container">
-    <div class="mini-block">
-        <h2 class="block-title"><span style="color: #276361;">{{ vacancy.title }}</span><span>{{ vacancy.price }}</span></h2>
-        <p style="margin-bottom: 0px;">{{ vacancy.company }}</p>
-        <p><strong>Адрес:</strong> {{ vacancy.address }}</p>
-        <p><strong>Требуемый опыт работы:</strong> {{ vacancy.experience }}</p>
-        <p><strong>График работы:</strong> {{ vacancy.schedule }}</p>
+<body>
+    <a href="/vacancies">
+        <img src="{{ url_for('static', filename='img/icon.png') }}" style="width: 35px; height: 35px;" alt="Icon">
+    </a>
+    <div class="container">
+        <div class="mini-block">
+            <h2 class="block-title"><span style="color: #276361;">{{ vacancy.title }}</span><span>{{ vacancy.price }}</span></h2>
+            <p style="margin-bottom: 0px;">{{ vacancy.company }}</p>
+            <p><strong>Адрес:</strong> {{ vacancy.address }}</p>
+            <p><strong>Требуемый опыт работы:</strong> {{ vacancy.experience }}</p>
+            <p><strong>График работы:</strong> {{ vacancy.schedule }}</p>
+        </div>
+        <div class="mini-block">
+            <p><strong>Описание</strong></p>
+            {% set description = vacancy.description.split("\n") %}
+            {% for string in description %}
+                <p>{{ string }}</p>
+            {% endfor %}
+        </div>
+        <div class="mini-block">
+            <p><strong>Контакты</strong></p>
+            <p>{{ vacancy.phone }}</p>
+            <p>{{ vacancy.email }}</p>
+        </div>
+        <p style="color: grey">Вакансия была создана {{vacancy.created_date}}</p>
     </div>
-    <div class="mini-block">
-        <p><strong>Описание</strong></p>
-        {% set description = vacancy.description.split("\n") %}
-        {% for string in description %}
-            <p>{{ string }}</p>
-        {% endfor %}
-    </div>
-    <div class="mini-block">
-        <p><strong>Контакты</strong></p>
-        <p>{{ vacancy.phone }}</p>
-        <p>{{ vacancy.email }}</p>
-    </div>
-    <p style="color: grey">Вакансия была создана {{vacancy.created_date}}</p>
-</div>
-{% endblock %}
+</body>
+</html>
