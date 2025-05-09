@@ -27,7 +27,7 @@
             <a href="/resume_add_form"><p class="button-submit"><button class="btn btn-primary">Добавить резюме</button></p></a>
             <br>
             {% else %}
-                <h5>Ваше резюме <a href="#"><button class="btn btn-primary">Изменить</button></a> <a href="{{ url_for('delete_resume', resume_id=resume.id) }}"><button class="btn btn-primary delete">Удалить</button></a></h5>
+                <h5>Ваше резюме <a href="{{ url_for('resume_edit', resume_id=resume.id) }}"><button class="btn btn-primary">Изменить</button></a> <a href="{{ url_for('delete_resume', resume_id=resume.id) }}"><button class="btn btn-primary delete">Удалить</button></a></h5>
                 <div class="person-card">
                     {% if current_user.avatar == None %}
                         {% if resume.gender == "Женский" %}
@@ -53,7 +53,7 @@
             {% if vacancies == 0 %}
             <a href="/vacancies_add_form"><p class="button-submit"><button class="btn btn-primary">Добавить вакансию</button></p></a>
             {% else %}
-                <h5>Ваша вакансия <a href="#"><button class="btn btn-primary">Изменить</button></a> <a href="{{ url_for('delete_vacancies', vacancies_id=vacancies.id) }}"><button class="btn btn-primary delete">Удалить</button></a></h5>
+                <h5>Ваша вакансия <a href="{{ url_for('vacancy_edit', vacancies_id=vacancies.id) }}"><button class="btn btn-primary">Изменить</button></a> <a href="{{ url_for('delete_vacancies', vacancies_id=vacancies.id) }}"><button class="btn btn-primary delete">Удалить</button></a></h5>
                 <div class="work-card">
                     <a href="{{ url_for('vacancy_detail', vacancy_id=vacancies.id) }}"><p class="work-name">{{ vacancies.title }}</p></a>
                     <p style="font-size: 20px">{{ vacancies.price }}</p>

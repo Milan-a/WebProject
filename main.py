@@ -229,6 +229,69 @@ def delete_vacancies(vacancies_id):
     return redirect("/profile")
 
 
+@app.route('/resume_edit/<int:resume_id>', methods=['GET', 'POST'])
+@login_required
+def resume_edit(resume_id):
+    db_sess = db_session.create_session()
+    resume = db_sess.query(Resume).get(resume_id)
+
+    if not resume:
+        return "Резюме не найдено", 404
+
+    if resume.user_id != current_user.id:
+        return "Нет доступа", 403
+
+    form = ResumeAddForm(obj=resume)  # Инициализируем форму с существующими данными
+    if form.validate_on_submit():
+        resume.title = form.title.data
+        resume.age = form.age.data
+        resume.gender = form.gender.data
+        resume.price = form.price.data
+        resume.experience = form.experience.data
+        resume.place_of_residence = form.place_of_residence.data
+        resume.last_place_of_work = form.last_place_of_work.data
+        resume.education = form.education.data
+        resume.specializations = form.specializations.data
+        resume.about_me = form.about_me.data
+        resume.contacts = form.contacts.data
+
+        db_sess.commit()
+        return redirect('/profile')
+
+    return render_template('resume_add_form.html', form=form, title='Редактировать резюме')
+
+
+@app.route('/vacancy_edit/<int:vacancies_id>', methods=['GET', 'POST'])
+@login_required
+def vacancy_edit(vacancies_id):
+    db_sess = db_session.create_session()
+    vacancy = db_sess.query(Vacancies).get(vacancies_id)
+
+    if not vacancy:
+        return "Вакансия не найдена", 404
+
+    if vacancy.user_id != current_user.id:
+        return "Нет доступа", 403
+
+    form = VacanciesAddForm(obj=vacancy)  # Инициализируем форму с существующими данными
+    if form.validate_on_submit():
+        vacancy.title = form.title.data
+        vacancy.company = form.company.data
+        vacancy.price = form.price.data
+        vacancy.experience = form.experience.data
+        vacancy.address = form.address.data
+        vacancy.schedule = form.schedule.data
+        vacancy.hours = form.hours.data
+        vacancy.description = form.description.data
+        vacancy.phone = form.phone.data
+        vacancy.email = form.email.data
+
+        db_sess.commit()
+        return redirect('/profile')
+
+    return render_template('vacancies_add_form.html', form=form, title='Редактировать вакансию')
+
+
 if __name__ == '__main__':
     db_session.global_init("db/data_base.sqlite")
     app.run(port=8080, host='127.0.0.1')
