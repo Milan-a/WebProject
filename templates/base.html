@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,16 +9,15 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 <!--    <link rel=”icon” href=”favicon.ico” sizes="32x32">-->
-    <link rel="stylesheet" href="static/css/style_card_container.css">
-    <link rel="stylesheet" href="static/css/style_work_container.css">
-    <link rel="stylesheet" href="static/css/style_detail.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_card_container.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_work_container.css') }}">
     <title>Home</title>
 </head>
 <body>
 <header>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light clr">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="static/img/icon.png" style="width: 35px; height: 35px;"></a>
+            <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='img/icon.png') }}" style="width: 35px; height: 35px;"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
                     aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -46,15 +45,70 @@
                 </ul>
                 {% if current_user.is_authenticated %}
                     <form class="d-flex">
-                        <a class="navbar-brand" href="/profile"><img src="static/img/person_icon.png" style="width: 40px; height: 40px;"></a>
+                        <a class="navbar-brand" href="/profile"><img src="{{ url_for('static', filename='img/person_icon.png') }}" style="width: 40px; height: 40px;"></a>
                     </form>
                 {% endif %}
             </div>
         </div>
     </nav>
 </header>
-
 <section>
+    <div class="search-block">
+        <select id="categorySelect" class="form-select" aria-label="Default select example">
+            <option value="all">Все</option>
+            <option value="name">Название</option>
+            <option value="description">Описание</option>
+            <option value="address">Адрес</option>
+            <option value="price">Цена</option>
+        </select>
+
+        <div class="d-flex mt-2">
+            <input id="searchInput" class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search">
+
+            {% if res_vac == 'res' %}
+                <a id="searchLink" href="#"
+                   data-base-path="/resume_search"
+                   data-default-path="{{ url_for('resume') }}"
+                   class="btn btn-primary" role="button">Поиск</a>
+            {% elif res_vac == 'vac' %}
+                <a id="searchLink" href="#"
+                    data-base-path="/vacancies_search"
+                    data-default-path="{{ url_for('vacancies') }}"
+                    class="btn btn-primary" role="button">Поиск</a>
+            {% endif %}
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchLink = document.getElementById('searchLink');
+
+            if (searchLink) {
+                searchLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const categorySelect = document.getElementById('categorySelect');
+                    const searchInput = document.getElementById('searchInput');
+
+                    const categoryValue = categorySelect.value;
+                    const requestValue = searchInput.value;
+
+                    const basePath = this.dataset.basePath;
+                    const defaultPath = this.dataset.defaultPath;
+
+                    if (!requestValue.trim()) {
+                        // Если поле поиска пустое, переходим по defaultPath
+                        window.location.href = defaultPath;
+                        return; // Завершаем выполнение, чтобы не идти дальше
+                    }
+
+                    const finalUrl = `${basePath}/${encodeURIComponent(categoryValue)}/${encodeURIComponent(requestValue)}`;
+                    window.location.href = finalUrl;
+                });
+            }
+        });
+        </script>
+    </div>
+
     {% block content %}{% endblock %}
 </section>
 </body>

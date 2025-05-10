@@ -6,12 +6,12 @@
             <div class="person-card">
                 {% if resume.user.avatar == None %}
                     {% if resume.gender == "Женский" %}
-                        <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="static/img/woman_avatar.png"></a>
+                        <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="{{ url_for('static', filename='img/woman_avatar.png') }}"></a>
                     {% elif resume.gender == "Мужской" %}
-                        <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="static/img/man_avatar.png"></a>
+                        <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="{{ url_for('static', filename='img/man_avatar.png') }}"></a>
                     {% endif %}
                 {% else %}
-                    <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="static/img/anon_avatar.png"></a>
+                    <a href="{{ url_for('resume_detail', resume_id=resume.id) }}"><img src="{{ url_for('static', filename='img/anon_avatar.png') }}"></a>
                 {% endif %}
 
                 <p class="person-name">{{ resume.title }}</p>

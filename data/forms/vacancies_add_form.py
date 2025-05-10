@@ -12,8 +12,9 @@ class VacanciesAddForm(FlaskForm):
     experience = StringField('Требуемый опыт работы', validators=[DataRequired()])
     address = StringField('Адрес работы', validators=[DataRequired()])
     schedule = StringField('График работы', validators=[DataRequired()])
-    hours = SelectField('Занятость', choices=['Другое', 'Полная занятость', 'Частичная занятость', 'Проектная работа', 'Подработка',
-                                 'Стажировка'], validators=[DataRequired()])
+    hours = SelectField('Занятость',
+        choices=['Другое', 'Полная занятость', 'Частичная занятость', 'Проектная работа', 'Подработка', 'Стажировка'],
+        validators=[DataRequired()])
     phone = TelField('Номер телефона для связи', validators=[DataRequired()])
     email = EmailField('Почта для связи', validators=[DataRequired()])
     description = TextAreaField('Подробное описание вакансии', validators=[DataRequired()])

@@ -9,7 +9,7 @@
         </a>
         <p style="font-size: 20px">{{ vacancies.price }}</p>
         <p style="color: #358885">{{ vacancies.company }}</p>
-        <p style="color: gray"><img src="static/img/place_icon.png">{{ vacancies.address }}</p>
+        <p style="color: gray"><img src="{{ url_for('static', filename='img/place_icon.png') }}">{{ vacancies.address }}</p>
         <p class="work-info">{{ vacancies.description }}</p>
     </div>
     {% endfor %}

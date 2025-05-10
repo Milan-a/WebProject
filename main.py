@@ -80,7 +80,7 @@ def vacancies():
         data.append(vacancies)
     data.reverse()
     template_name = 'vacancies.html'
-    return render_template(template_name, data=data)
+    return render_template(template_name, data=data, res_vac='vac')
 
 
 @app.route('/resume')
@@ -91,7 +91,71 @@ def resume():
         data.append(resume)
     data.reverse()
     template_name = 'resume.html'
-    return render_template(template_name, data=data)
+    return render_template(template_name, data=data, res_vac='res')
+
+
+@app.route('/vacancies_search/<category>/<request>')
+def vacancies_search(category, request):
+    data = []
+    db_sess = db_session.create_session()
+    request=request.lower()[1:]
+    if category == 'name':
+        vacancy = db_sess.query(Vacancies).filter(Vacancies.title.like(f"%{request}%"))
+    elif category == 'description':
+        vacancy = db_sess.query(Vacancies).filter(Vacancies.description.like(f"%{request}%"))
+    elif category == 'address':
+        vacancy = db_sess.query(Vacancies).filter(Vacancies.address.like(f"%{request}%"))
+    elif category == 'price':
+        vacancy = db_sess.query(Vacancies).filter(Vacancies.price.like(f"%{request}%"))
+    else:
+        vacancy = db_sess.query(Vacancies).filter(Vacancies.title.like(f"%{request}%")
+                                                  | Vacancies.company.like(f"%{request}%")
+                                                  | Vacancies.price.like(f"%{request}%")
+                                                  | Vacancies.experience.like(f"%{request}%")
+                                                  | Vacancies.address.like(f"%{request}%")
+                                                  | Vacancies.schedule.like(f"%{request}%")
+                                                  | Vacancies.hours.like(f"%{request}%")
+                                                  | Vacancies.description.like(f"%{request}%"))
+
+    for vac in vacancy:
+        data.append(vac)
+    data.reverse()
+    template_name = 'vacancies.html'
+    return render_template(template_name, data=data, res_vac='vac')
+
+
+@app.route('/resume_search/<category>/<request>')
+def resume_search(category, request):
+    data = []
+    db_sess = db_session.create_session()
+    request = request.lower()[1:]
+    if category == 'name':
+        resumes = db_sess.query(Resume).filter(Resume.title.like(f"%{request}%"))
+    elif category == 'description':
+        resumes = db_sess.query(Resume).filter(Resume.about_me.like(f"%{request}%")
+                                               | Resume.education.like(f"%{request}%")
+                                               | Resume.specializations.like(f"%{request}%"))
+    elif category == 'address':
+        resumes = db_sess.query(Resume).filter(Resume.place_of_residence.like(f"%{request}%"))
+    elif category == 'price':
+        resumes = db_sess.query(Resume).filter(Resume.price.like(f"%{request}%"))
+    else:
+        resumes = db_sess.query(Resume).filter(Resume.title.like(f"%{request}%")
+                                               | Resume.age.like(f"%{request}%")
+                                               | Resume.gender.like(f"%{request}%")
+                                               | Resume.price.like(f"%{request}%")
+                                               | Resume.experience.like(f"%{request}%")
+                                               | Resume.place_of_residence.like(f"%{request}%")
+                                               | Resume.last_place_of_work.like(f"%{request}%")
+                                               | Resume.education.like(f"%{request}%")
+                                               | Resume.specializations.like(f"%{request}%")
+                                               | Resume.about_me.like(f"%{request}%"))
+
+    for res in resumes:
+        data.append(res)
+    data.reverse()
+    template_name = 'resume.html'
+    return render_template(template_name, data=data, res_vac='res')
 
 
 @app.route('/vacancies_add_form', methods=['GET', 'POST'])
@@ -121,11 +185,6 @@ def vacancies_add_form():
         db_sess.commit()
         return redirect('/profile')
     return render_template('vacancies_add_form.html', form=form)
-
-
-# # Конфигурация для загрузки изображений
-# UPLOAD_FOLDER = 'static/img/uploads'  # Папка для сохранения изображений
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/resume_add_form', methods=['GET', 'POST'])

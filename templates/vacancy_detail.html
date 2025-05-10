@@ -21,6 +21,9 @@
             <p><strong>Адрес:</strong> {{ vacancy.address }}</p>
             <p><strong>Требуемый опыт работы:</strong> {{ vacancy.experience }}</p>
             <p><strong>График работы:</strong> {{ vacancy.schedule }}</p>
+            {% if vacancy.hours != 'Другое' %}
+                <p><strong>Занятость:</strong> {{ vacancy.hours }}</p>
+            {% endif %}
         </div>
         <div class="mini-block">
             <p><strong>Описание</strong></p>
