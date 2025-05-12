@@ -9,7 +9,11 @@
         </a>
         <p style="font-size: 20px">{{ vacancies.price }}</p>
         <p style="color: #358885">{{ vacancies.company }}</p>
-        <p style="color: gray"><img src="{{ url_for('static', filename='img/place_icon.png') }}">{{ vacancies.address }}</p>
+        {% if "удал" in vacancies.address.lower() %}
+            <p style="color: gray">{{ vacancies.address }}</p>
+        {% else %}
+            <p style="color: gray"><img src="{{ url_for('static', filename='img/place_icon.png') }}">{{ vacancies.address }}</p>
+        {% endif %}
         <p class="work-info">{{ vacancies.description }}</p>
     </div>
     {% endfor %}

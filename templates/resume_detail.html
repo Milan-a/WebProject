@@ -24,7 +24,9 @@
 
         <div class="mini-block">
             <p><strong>Специализации</strong></p>
-            <p>{{ resume.specializations }}</p>
+            {% for string in resume.specializations.split('\n') %}
+                <p>{{ string }}</p>
+            {% endfor %}
         </div>
 
         <div class="mini-block">
@@ -45,7 +47,7 @@
         </div>
 
         <div class="mini-block">
-            <p><strong>Контакты</strong></p>
+            <p><strong>Контакты для связи</strong></p>
             {% for string in resume.contacts.split('\n') %}
                 <p>{{ string }}</p>
             {% endfor %}

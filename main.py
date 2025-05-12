@@ -98,7 +98,6 @@ def resume():
 def vacancies_search(category, request):
     data = []
     db_sess = db_session.create_session()
-    request=request.lower()[1:]
     if category == 'name':
         vacancy = db_sess.query(Vacancies).filter(Vacancies.title.like(f"%{request}%"))
     elif category == 'description':
@@ -128,7 +127,6 @@ def vacancies_search(category, request):
 def resume_search(category, request):
     data = []
     db_sess = db_session.create_session()
-    request = request.lower()[1:]
     if category == 'name':
         resumes = db_sess.query(Resume).filter(Resume.title.like(f"%{request}%"))
     elif category == 'description':

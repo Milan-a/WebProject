@@ -16,10 +16,18 @@
 </head>
 <body>
     <a class="support-icon" href="/vacancies">
-        <img src="static/img/icon.png" style="width: 35px; height: 35px;" alt="Support Icon">
+        <img src="{{ url_for('static', filename='img/icon.png') }}" style="width: 35px; height: 35px;" alt="Support Icon">
     </a>
     <div class="container-profile">
-        <img src="static/img/anon_avatar.png" class="profile-icon" alt="Support Icon">
+        {% if resume == 1 %}
+            {% if resume.gender == "Женский" %}
+                <img src="{{ url_for('static', filename='img/woman_avatar.png') }}" class="profile-icon" alt="Support Icon">
+            {% elif resume.gender == "Мужской" %}
+                <img src="{{ url_for('static', filename='img/man_avatar.png') }}" class="profile-icon" alt="Support Icon">
+            {% endif %}
+        {% else %}
+            <img src="{{ url_for('static', filename='img/anon_avatar.png') }}" class="profile-icon" alt="Support Icon">
+        {% endif %}
         <p class="name-profile">{{ current_user.name }}</p>
         <br>
         <div class="res-and-vac">

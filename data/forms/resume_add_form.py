@@ -14,5 +14,5 @@ class ResumeAddForm(FlaskForm):
     education = SelectField('Образование', choices=['Нету', 'Общее', 'Среднее', 'Высшее'], validators=[DataRequired()])
     specializations = TextAreaField('Специализации', validators=[DataRequired()])
     about_me = TextAreaField('"Обо мне"', validators=[DataRequired()])
-    contacts = TextAreaField('Ваши контакты', validators=[DataRequired()])
+    contacts = TextAreaField('Ваши контакты для связи', validators=[DataRequired()])
     submit = SubmitField('Сохранить')
