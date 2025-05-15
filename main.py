@@ -286,6 +286,26 @@ def delete_vacancies(vacancies_id):
     return redirect("/profile")
 
 
+@app.route('/delete_profile/<int:user_id>')
+def delete_profile(user_id):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(user_id)
+    if not user:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+    db_sess.delete(user)
+
+    resume = db_sess.query(Resume).filter(Resume.user_id == user_id).first()
+    if resume:
+        db_sess.delete(resume)
+
+    vacancy = db_sess.query(Vacancies).filter(Vacancies.user_id == user_id).first()
+    if vacancy:
+        db_sess.delete(vacancy)
+
+    db_sess.commit()
+    return redirect("/vacancies")
+
+
 @app.route('/resume_edit/<int:resume_id>', methods=['GET', 'POST'])
 @login_required
 def resume_edit(resume_id):
